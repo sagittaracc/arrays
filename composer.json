@@ -1,0 +1,12 @@
+{
+  "name": "sagittaracc/arrays",
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  },
+  "require": {},
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  }
+}
