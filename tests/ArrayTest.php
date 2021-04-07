@@ -18,5 +18,25 @@ final class ArrayTest extends TestCase
 
     $this->assertTrue(ArrayHelper::isSequential([1,2,3]));
     $this->assertFalse(ArrayHelper::isSequential(['foo' => 'bar']));
+
+    $this->assertEquals(ArrayHelper::rename_keys([
+      'old_key1' => 1,
+      'old_key2' => 2,
+      'old_key3' => 3,
+    ], [
+      'new_key1', 'new_key2', 'new_key3'
+    ]), [
+      'new_key1' => 1,
+      'new_key2' => 2,
+      'new_key3' => 3,
+    ]);
+
+    $this->assertNull(ArrayHelper::rename_keys([
+      'old_key1' => 1,
+      'old_key2' => 2,
+      'old_key3' => 3,
+    ], [
+      'new_key1', 'new_key2', 'new_key3', 'new_key4'
+    ]));
   }
 }
