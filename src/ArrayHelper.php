@@ -104,4 +104,49 @@ class ArrayHelper
     {
         return self::index($option, $array, true);
     }
+    /**
+     * Парсинг json структуры
+     * @param string $json
+     * @param array $names наименование секций в структуре
+     * @return array
+     */
+    public static function jsonStructure($json, $names = [])
+    {
+        $jsonObject = json_decode($json, true);
+
+        return self::readStructure($jsonObject, $names, 0);
+    }
+    /**
+     * Прочитать поля массива
+     * @param array $object
+     * @param array $names наименование секций в структуре
+     * @param integer $i текущая читаемая секция
+     * @return array
+     */
+    private static function readStructure($object, $names, $i)
+    {
+        if (!isset($names[$i])) {
+            return [];
+        }
+
+        $structure = [];
+        $structure[$names[$i]] = [];
+
+        foreach ($object as $key => $value) {
+            if (gettype($value) === 'array') {
+                if (self::isSequential($value)) {
+                    $structure = array_merge($structure, self::readStructure($value[0], $names, $i + 1));
+                    break;
+                }
+                else {
+                    $structure = array_merge($structure, self::readStructure($value, $names, $i + 1));
+                }
+            }
+            else {
+                $structure[$names[$i]][$key] = gettype($value);
+            }
+        }
+
+        return $structure;
+    }
 }
