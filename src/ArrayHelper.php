@@ -149,4 +149,26 @@ class ArrayHelper
 
         return $structure;
     }
+    /**
+     * Получает значение в массиве
+     * @param string path
+     * @return array
+     */
+    public static function getValue($array, $path = null)
+    {
+        if ($path === null) {
+            return $array;
+        }
+
+        $path = explode('.', $path);
+
+        $pointer = &$array;
+        foreach ($path as $key) {
+            if (!isset($pointer[$key])) return null;
+
+            $pointer = &$pointer[$key];
+        }
+
+        return $pointer;
+    }
 }

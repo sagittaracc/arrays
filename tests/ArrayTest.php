@@ -105,4 +105,17 @@ final class ArrayTest extends TestCase
             ],
         ]);
     }
+
+    public function testGetValue(): void
+    {
+        $this->assertEquals(
+            ['foo' => 'bar'],
+            ArrayHelper::getValue(['foo' => 'bar'])
+        );
+
+        $this->assertEquals(
+            ['bar', 'boo'],
+            ArrayHelper::getValue(['foo' => ['bar', 'boo']], 'foo')
+        );
+    }
 }
