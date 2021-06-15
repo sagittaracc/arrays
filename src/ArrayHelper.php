@@ -171,4 +171,22 @@ class ArrayHelper
 
         return $pointer;
     }
+    /**
+     * Сцепление массивов
+     * @param array $arr
+     * @param array $join
+     * @return array
+     */
+    public static function join($arr, $join)
+    {
+        $joinArr = [];
+
+        foreach ($arr as $key => $value) {
+            if (isset($join[$value])) {
+                $joinArr[$key] = $join[$value];
+            }
+        }
+
+        return $joinArr;
+    }
 }

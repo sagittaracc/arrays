@@ -118,4 +118,24 @@ final class ArrayTest extends TestCase
             ArrayHelper::getValue(['foo' => ['bar', 'boo']], 'foo')
         );
     }
+
+    public function testJoin(): void
+    {
+        $this->assertEquals(
+            [
+                'first' => 1,
+                'second' => 's',
+                'third' => 1,
+            ],
+            ArrayHelper::join([
+                'first' => 'integer',
+                'second' => 'string',
+                'third' => 'integer',
+                'forth' => 'boolean',
+            ], [
+                'integer' => 1,
+                'string' => 's'
+            ])
+        );
+    }
 }
