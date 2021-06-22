@@ -138,4 +138,20 @@ final class ArrayTest extends TestCase
             ])
         );
     }
+
+    public function testArrayHeaderAndBody(): void
+    {
+        $arr = ArrayHelper::setArray([
+            ['id' => 1, 'name' => 'name 1'],
+            ['id' => 2, 'name' => 'name 2'],
+            ['id' => 3, 'name' => 'name 3'],
+        ]);
+
+        $this->assertEquals(['id', 'name'], $arr->getHeader());
+        $this->assertEquals([
+            [1, 'name 1'],
+            [2, 'name 2'],
+            [3, 'name 3'],
+        ], $arr->getBody());
+    }
 }

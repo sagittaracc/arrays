@@ -11,6 +11,50 @@ namespace sagittaracc;
 class ArrayHelper
 {
     /**
+     * @var array заданный массив
+     */
+    private $array = [];
+    /**
+     * Задать массив
+     * @param array $array
+     * @return self
+     */
+    public static function setArray($array)
+    {
+        $instance = new self;
+        $instance->array = $array;
+        return $instance;
+    }
+    /**
+     * Получить заголовок
+     * @return array
+     */
+    public function getHeader()
+    {
+        if (empty($this->array)) {
+            return [];
+        }
+
+        return array_keys($this->array[0]);
+    }
+    /**
+     * Получить тело
+     * @return array
+     */
+    public function getBody()
+    {
+        if (empty($this->array)) {
+            return [];
+        }
+
+        $body = [];
+        foreach ($this->array as $row) {
+            $body[] = array_values($row);
+        }
+
+        return $body;
+    }
+    /**
      * Строит срез массива по набору ключей
      * @param array $array
      * @param array $key
