@@ -2,6 +2,8 @@
 
 namespace sagittaracc;
 
+use Closure;
+
 /**
  * This is me array helper
  * I use it for sagittaracc/suql
@@ -107,32 +109,58 @@ class ArrayHelper
         $indexArr = [];
         $pointer = null;
 
-        if (is_string($option)) {
-            $simpleIndex = $option;
-
+        if ($option instanceof Closure) {
             foreach ($array as $row) {
-                $group
-                    ? $indexArr[$row[$simpleIndex]][] = $row
-                    : $indexArr[$row[$simpleIndex]] = $row;
+                $key = $option($row);
+
+                if (is_array($key)) {
+                    $pointer = &$indexArr;
+    
+                    foreach ($key as $_key) {
+                        if (!isset($pointer[$_key])) {
+                            $pointer[$_key] = [];
+                        }
+    
+                        $pointer = &$pointer[$_key];
+                    }
+    
+                    $group
+                        ? $pointer[] = $row
+                        : $pointer = $row;
+                }
+                else {
+                    $group
+                        ? $indexArr[$key][] = $row
+                        : $indexArr[$key] = $row;
+                }
             }
         }
         else if (is_array($option)) {
-            $multiIndex = $option;
-
             foreach ($array as $row) {
                 $pointer = &$indexArr;
 
-                foreach ($multiIndex as $index) {
-                    if (!isset($pointer[$row[$index]])) {
-                        $pointer[$row[$index]] = [];
+                foreach ($option as $index) {
+                    $key = $row[$index];
+
+                    if (!isset($pointer[$key])) {
+                        $pointer[$key] = [];
                     }
 
-                    $pointer = &$pointer[$row[$index]];
+                    $pointer = &$pointer[$key];
                 }
 
                 $group
                     ? $pointer[] = $row
                     : $pointer = $row;
+            }
+        }
+        else {
+            foreach ($array as $row) {
+                $key = $row[$option];
+
+                $group
+                    ? $indexArr[$key][] = $row
+                    : $indexArr[$key] = $row;
             }
         }
 

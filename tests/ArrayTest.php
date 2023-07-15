@@ -55,7 +55,39 @@ final class ArrayTest extends TestCase
             ],
         ]);
 
+        $this->assertEquals(ArrayHelper::index(fn($row) => $row['id'], [
+            ['id' => 1, 'text' => 'foo'],
+            ['id' => 2, 'text' => 'bar'],
+        ]), [
+            1 => [
+                'id' => 1,
+                'text' => 'foo'
+            ],
+            2 => [
+                'id' => 2,
+                'text' => 'bar'
+            ],
+        ]);
+
         $this->assertEquals(ArrayHelper::index(['id', 'text'], [
+            ['id' => 1, 'text' => 'foo'],
+            ['id' => 2, 'text' => 'bar'],
+        ]), [
+            1 => [
+                'foo' => [
+                    'id' => 1,
+                    'text' => 'foo',
+                ],
+            ],
+            2 => [
+                'bar' => [
+                    'id' => 2,
+                    'text' => 'bar',
+                ],
+            ],
+        ]);
+
+        $this->assertEquals(ArrayHelper::index(fn($row) => [$row['id'], $row['text']], [
             ['id' => 1, 'text' => 'foo'],
             ['id' => 2, 'text' => 'bar'],
         ]), [
@@ -87,7 +119,39 @@ final class ArrayTest extends TestCase
             ],
         ]);
 
+        $this->assertEquals(ArrayHelper::group(fn($row) => $row['text'], [
+            ['id' => 1, 'text' => 'foo'],
+            ['id' => 2, 'text' => 'bar'],
+            ['id' => 3, 'text' => 'bar'],
+        ]), [
+            'foo' => [
+                ['id' => 1, 'text' => 'foo']
+            ],
+            'bar' => [
+                ['id' => 2, 'text' => 'bar'],
+                ['id' => 3, 'text' => 'bar'],
+            ],
+        ]);
+
         $this->assertEquals(ArrayHelper::group(['text', 'data'], [
+            ['id' => 1, 'text' => 'foo', 'data' => 'input'],
+            ['id' => 2, 'text' => 'bar', 'data' => 'output'],
+            ['id' => 3, 'text' => 'bar', 'data' => 'output'],
+        ]), [
+            'foo' => [
+                'input' => [
+                    ['id' => 1, 'text' => 'foo', 'data' => 'input'],
+                ]
+            ],
+            'bar' => [
+                'output' => [
+                    ['id' => 2, 'text' => 'bar', 'data' => 'output'],
+                    ['id' => 3, 'text' => 'bar', 'data' => 'output'],
+                ]
+            ],
+        ]);
+
+        $this->assertEquals(ArrayHelper::group(fn($row) => [$row['text'], $row['data']], [
             ['id' => 1, 'text' => 'foo', 'data' => 'input'],
             ['id' => 2, 'text' => 'bar', 'data' => 'output'],
             ['id' => 3, 'text' => 'bar', 'data' => 'output'],
