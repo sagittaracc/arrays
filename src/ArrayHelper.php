@@ -221,16 +221,35 @@ class ArrayHelper
      * @param array $join
      * @return array
      */
-    public static function join($arr, $join)
+    public static function join($array, $join)
     {
         $joinArr = [];
 
-        foreach ($arr as $key => $value) {
+        foreach ($array as $key => $value) {
             if (isset($join[$value])) {
                 $joinArr[$key] = $join[$value];
             }
         }
 
         return $joinArr;
+    }
+    /**
+     * 
+     */
+    public static function serialize($array, $objectClass)
+    {
+        $list = [];
+
+        foreach ($array as $item) {
+            $object = new $objectClass;
+
+            foreach ($item as $key => $value) {
+                $object->$key = $value;
+            }
+
+            $list[] = $object;
+        }
+
+        return $list;
     }
 }

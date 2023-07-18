@@ -154,4 +154,19 @@ final class ArrayTest extends TestCase
             [3, 'name 3'],
         ], $arr->getBody());
     }
+
+    public function testSerialize(): void
+    {
+        $objectList = ArrayHelper::serialize([
+            ['id' => 1, 'name' => 'name 1'],
+            ['id' => 2, 'name' => 'name 2'],
+            ['id' => 3, 'name' => 'name 3'],
+        ], stdClass::class);
+
+        foreach ($objectList as $i => $object) {
+            $this->assertInstanceOf(stdClass::class, $object);
+            $this->assertSame($i + 1, $object->id);
+            $this->assertSame('name ' . ($i + 1), $object->name);
+        }
+    }
 }
